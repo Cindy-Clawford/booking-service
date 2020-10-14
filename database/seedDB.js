@@ -1,13 +1,15 @@
 const mongoose = require('mongoose');
 var db = require('./index.js');
 var faker = require('faker');
+var { dbUrl, user, pass } = require('./config.js');
 
 
 
-var dbUrl = 'mongodb://54.189.148.129:27017/booking'
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  user: user,
+  pass: pass
 }, (err) => {
   mongoose.connection.dropDatabase()
 });

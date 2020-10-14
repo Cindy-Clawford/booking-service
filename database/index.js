@@ -1,8 +1,11 @@
 const mongoose = require('mongoose');
-var dbUrl = 'mongodb://54.189.148.129:27017/booking'
+var { dbUrl, user, pass } = require('./config.js')
+
 mongoose.connect(dbUrl, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
+  user: user,
+  pass: pass
 });
 
 let tripSchema = mongoose.Schema({
