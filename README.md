@@ -1,9 +1,9 @@
 # Booking
 
 ## Scripts
-Database seed script: "seedDB"
-Build script: "react-dev"
-Run script: "start"
+- Database seed script: "seedDB"
+- Build script: "react-dev"
+- Run script: "start"
 
 ## Database
 Uses DBMS_NAME_HERE. Configure database settings in database/config.js
