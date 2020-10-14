@@ -14,32 +14,46 @@ app.use(express.urlencoded({extended: true}));
 
 
 app.get('/api/trips/:id', (req, res) => {
-  db.getReservationsForLocation(req.params.id)
+  db.getTripsForLocation(req.params.id)
   .then(result => {
     res.send(result);
   });
 });
 
-app.get('/api/low-days/:id', (req, res) => {
-  db.getLocationInformation(req.params.id)
+app.get('/api/locations/:id', (req, res) => {
+  db.getLocation(req.params.id)
   .then(result => {
     res.send(result);
   });
 })
 
 app.post('/api/trips/', (req, res) => {
-  db.save(req.body.trip)
+  db.createTrip(req.body.trip)
   .then((result => {
     res.send(result);
-  }))
+  }));
 });
 
-app.patch('/api/update/', (req, res) => {
-  // TODO: Update a trip.
+app.patch('/api/trips/:id', (req, res) => {
+  db.updateTrip(req.params.id, req.body.trip)
+  .then(result => {
+    res.send(result);
+  })
+  .catch(err => {
+    console.error(`ERROR: failed to update trip with id ${req.params.id}`);
+    console.error(err);
+  });
 });
 
-app.delete('/api/removal/', (req, res) => {
-  // TODO: Delete a trip.
+app.delete('/api/trips/:id', (req, res) => {
+  db.deleteTrip(req.params.id)
+  .then(result => {
+    res.send(result);
+  })
+  .catch(err => {
+    console.error(`ERROR: failed to delete trip with id ${req.params.id}`);
+    console.error(err);
+  });
 });
 
 app.get('/*', (req, res) => {
