@@ -1,7 +1,5 @@
 const faker = require('faker');
 
-console.log('Record Generator Launched!');
-
 // Generates location data
 const genLocations = (blockSize) => {
   console.log(`Generating ${blockSize} locations`);
