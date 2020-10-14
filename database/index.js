@@ -29,7 +29,7 @@ let locationSchema = mongoose.Schema({
 let Trip = mongoose.model('Trip', tripSchema);
 let Location = mongoose.model('Location', locationSchema);
 
-var save = (trip) => {
+var createTrip = (trip) => {
   return new Promise((resolve, reject) => {
     Trip.create(trip, (err, result) => {
       if (err) {
@@ -41,7 +41,7 @@ var save = (trip) => {
   });
 }
 
-var getReservationsForLocation = (locationId) => {
+var getTripsForLocation = (locationId) => {
   return new Promise((resolve, reject) => {
     Trip.find({
       locationId: locationId
@@ -72,7 +72,7 @@ var createLocation = (location) => {
   });
 }
 
-var getLocationInformation = (locationId) => {
+var getLocation = (locationId) => {
   return new Promise((resolve, reject) => {
     Location.find({
       name: locationId
@@ -86,9 +86,19 @@ var getLocationInformation = (locationId) => {
   });
 }
 
+const updateTrip = (tripId) => {
+  // TODO: Update trip record.
+};
 
+const deleteTrip = (tripID) => {
+  // TODO: Delete trip record.
+}
 
-module.exports.save = save;
-module.exports.getReservationsForLocation = getReservationsForLocation;
-module.exports.createLocation = createLocation;
-module.exports.getLocationInformation = getLocationInformation;
+module.exports = {
+  save,
+  getReservationsForLocation,
+  createLocation,
+  getLocationInformation
+  updateTrip,
+  deleteTrip
+}
