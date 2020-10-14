@@ -34,6 +34,14 @@ app.post('/api/trips/', (req, res) => {
   }))
 });
 
+app.patch('/api/update/', (req, res) => {
+  // TODO: Update a trip.
+});
+
+app.delete('/api/removal/', (req, res) => {
+  // TODO: Delete a trip.
+});
+
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '..','public', 'index.html'));
 })
