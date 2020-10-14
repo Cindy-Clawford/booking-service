@@ -1,7 +1,9 @@
 const faker = require('faker');
 
 // This value determines the number of records
-// generated per database insertion.
+// generated per database insertion. This is to
+// prevent running out of local memory during
+// the seeding process. Adjust to suit your needs.
 const RECORDS_QUANTITY = 100000;
 
 console.log('Record Generator Launched!');
@@ -12,9 +14,9 @@ const genLocations = () => {
   const locations = [];
   for (let i = 0; i < RECORDS_QUANTITY; i++) {
 
-    if (i % Math.floor(RECORDS_QUANTITY / 8) === 0) {
-      progressUpdate(i);
-    }
+    // if (i % Math.floor(RECORDS_QUANTITY / 8) === 0) {
+    //   progressUpdate(i);
+    // }
 
     const lowDays = [];
     const today = new Date();
@@ -41,9 +43,11 @@ const genTrips = () => {
     const numberOfResevervations = Math.floor(Math.random() * 25);
     const adults = Math.ceil(Math.random() * 10);
     const checkIn = faker.date.soon(90);
-    if (i % Math.floor(RECORDS_QUANTITY / 8) === 0) {
-      progressUpdate(i);
-    }
+
+    // if (i % Math.floor(RECORDS_QUANTITY / 8) === 0) {
+    //   progressUpdate(i);
+    // }
+
     for (let j = 0; j < numberOfResevervations; j++) {
 
 
@@ -61,6 +65,7 @@ const genTrips = () => {
   return trips;
 };
 
+// Logs progress reports every 12.5 percent
 const progressUpdate = (i) => {
   const percentage = (i / RECORDS_QUANTITY) * 100;
   console.log(`${percentage}% completed.`);
