@@ -7,11 +7,6 @@ const genLocations = (blockSize) => {
   console.log(`Generating ${blockSize} locations`);
   const locations = [];
   for (let i = 0; i < blockSize; i++) {
-
-    // if (i % Math.floor(blockSize / 8) === 0) {
-    //   progressUpdate(i);
-    // }
-
     const lowDays = [];
     const today = new Date();
     for (var j = 0; j < 40; j++) {
@@ -37,14 +32,7 @@ const genTrips = (blockSize) => {
     const numberOfResevervations = Math.floor(Math.random() * 25);
     const adults = Math.ceil(Math.random() * 10);
     const checkIn = faker.date.soon(90);
-
-    // if (i % Math.floor(blockSize / 8) === 0) {
-    //   progressUpdate(i);
-    // }
-
     for (let j = 0; j < numberOfResevervations; j++) {
-
-
       let trip = {
         locationId: i,
         checkIn: checkIn,
@@ -58,11 +46,5 @@ const genTrips = (blockSize) => {
   }
   return trips;
 };
-
-// Logs progress reports every 12.5 percent
-const progressUpdate = (i) => {
-  const percentage = (i / blockSize) * 100;
-  console.log(`${percentage}% completed.`);
-}
 
 module.exports = { genLocations, genTrips };
