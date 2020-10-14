@@ -1,20 +1,14 @@
 const faker = require('faker');
 
-// This value determines the number of records
-// generated per database insertion. This is to
-// prevent running out of local memory during
-// the seeding process. Adjust to suit your needs.
-const RECORDS_QUANTITY = 100000;
-
 console.log('Record Generator Launched!');
 
 // Generates location data
-const genLocations = () => {
-  console.log(`Generating ${RECORDS_QUANTITY} locations`);
+const genLocations = (blockSize) => {
+  console.log(`Generating ${blockSize} locations`);
   const locations = [];
-  for (let i = 0; i < RECORDS_QUANTITY; i++) {
+  for (let i = 0; i < blockSize; i++) {
 
-    // if (i % Math.floor(RECORDS_QUANTITY / 8) === 0) {
+    // if (i % Math.floor(blockSize / 8) === 0) {
     //   progressUpdate(i);
     // }
 
@@ -35,16 +29,16 @@ const genLocations = () => {
 };
 
 // Generates trip data
-const genTrips = () => {
-  console.log(`Generating ${RECORDS_QUANTITY} trips`);
+const genTrips = (blockSize) => {
+  console.log(`Generating ${blockSize} trips`);
 
   const trips = [];
-  for (let i = 0; i < RECORDS_QUANTITY; i++) {
+  for (let i = 0; i < blockSize; i++) {
     const numberOfResevervations = Math.floor(Math.random() * 25);
     const adults = Math.ceil(Math.random() * 10);
     const checkIn = faker.date.soon(90);
 
-    // if (i % Math.floor(RECORDS_QUANTITY / 8) === 0) {
+    // if (i % Math.floor(blockSize / 8) === 0) {
     //   progressUpdate(i);
     // }
 
@@ -67,7 +61,7 @@ const genTrips = () => {
 
 // Logs progress reports every 12.5 percent
 const progressUpdate = (i) => {
-  const percentage = (i / RECORDS_QUANTITY) * 100;
+  const percentage = (i / blockSize) * 100;
   console.log(`${percentage}% completed.`);
 }
 
