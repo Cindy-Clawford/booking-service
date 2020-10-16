@@ -16,17 +16,29 @@ const genLocations = (blockSize) => {
 };
 
 // Generates lowDays
-// 0: date, 1: locationid
+// 0-9: date, 10: locationid
 const genLowDays = (blockSize, startingIndex) => {
   const lowDays = [];
   for (let i = startingIndex; i < startingIndex + blockSize; i++) {
-    const quantLowDays = Math.floor(Math.random() * 40);
+    const quantLowDays = Math.floor(Math.random() * 35) + 5;
+    const dates = [];
     for (var j = 0; j < quantLowDays; j++) {
-      const today = new Date();
+      dates.push(new Date());
+    }
+    for (var k = 0; k < Math.ceil(dates.length / 10); k++) {
       lowDays.push([
-        new Date(faker.date.future(0.5, today)),
-        i
-      ]);;
+          dates[k * 10] || null,
+          dates[k * 10 + 1] || null,
+          dates[k * 10 + 2] || null,
+          dates[k * 10 + 3] || null,
+          dates[k * 10 + 4] || null,
+          dates[k * 10 + 5] || null,
+          dates[k * 10 + 6] || null,
+          dates[k * 10 + 7] || null,
+          dates[k * 10 + 8] || null,
+          dates[k * 10 + 9] || null,
+          i
+      ]);
     }
   }
   return lowDays;
