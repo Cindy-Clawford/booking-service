@@ -1,25 +1,36 @@
 const faker = require('faker');
 
-// Generates location data
+// Generates location data in tuples
+// 0: rooms, 1: name
 const genLocations = (blockSize) => {
-  console.log(`Generating ${blockSize} locations`);
   const locations = [];
   for (let i = 0; i < blockSize; i++) {
-    const lowDays = [];
-    const today = new Date();
-    for (var j = 0; j < 40; j++) {
-      lowDays.push(new Date(faker.date.future(0.5, today)))
-    }
-    const location = {
-      id: i,
-      rooms: Math.floor(Math.random() * 20) + 5,
-      name: faker.name.lastName(),
-      lowDays: lowDays
-    };
+
+    const location = [
+      Math.floor(Math.random() * 20) + 5,
+      faker.name.lastName()
+    ];
     locations.push(location);
   }
   return locations;
 };
+
+// Generates lowDays
+// 0: date, 1: locationid
+const genLowDays = (blockSize, startingIndex) => {
+  const lowDays = [];
+  for (let i = startingIndex; i < startingIndex + blockSize; i++) {
+    const quantLowDays = Math.floor(Math.random() * 40);
+    for (var j = 0; j < quantLowDays; j++) {
+      const today = new Date();
+      lowDays.push([
+        new Date(faker.date.future(0.5, today)),
+        i
+      ]);;
+    }
+  }
+  return lowDays;
+}
 
 // Generates trip data
 const genTrips = (blockSize) => {
@@ -45,4 +56,4 @@ const genTrips = (blockSize) => {
   return trips;
 };
 
-module.exports = { genLocations, genTrips };
+module.exports = { genLocations, genTrips, genLowDays };
