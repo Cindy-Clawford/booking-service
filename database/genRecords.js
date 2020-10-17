@@ -20,23 +20,10 @@ const genLocations = (blockSize) => {
 const genLowDays = (blockSize, startingIndex) => {
   const lowDays = [];
   for (let i = startingIndex; i < startingIndex + blockSize; i++) {
-    const quantLowDays = Math.floor(Math.random() * 35) + 5;
-    const dates = [];
+    const quantLowDays = Math.floor(Math.random() * 30);
     for (var j = 0; j < quantLowDays; j++) {
-      dates.push(new Date());
-    }
-    for (var k = 0; k < Math.ceil(dates.length / 10); k++) {
       lowDays.push([
-          dates[k * 10] || null,
-          dates[k * 10 + 1] || null,
-          dates[k * 10 + 2] || null,
-          dates[k * 10 + 3] || null,
-          dates[k * 10 + 4] || null,
-          dates[k * 10 + 5] || null,
-          dates[k * 10 + 6] || null,
-          dates[k * 10 + 7] || null,
-          dates[k * 10 + 8] || null,
-          dates[k * 10 + 9] || null,
+          new Date(faker.date.future(0.5, new Date())),
           i
       ]);
     }
@@ -69,3 +56,5 @@ const genTrips = (blockSize) => {
 };
 
 module.exports = { genLocations, genTrips, genLowDays };
+
+console.log(genLowDays(25, 1));
