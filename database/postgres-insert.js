@@ -4,7 +4,11 @@ const format = require('pg-format');
 const { host, user, password, database, port } = require('./config.js');
 const faker = require('faker');
 
+const blockSize = 100000;
 const targetRecords = 10000000;
+const blockQuant = targetRecords / blockSize;
+
+
 const pool = new Pool({
   host,
   database,
@@ -30,8 +34,6 @@ pool.connect()
 
 // Seed Locations
 // const seedLocations = () => {
-//   const blockSize = 100000;
-//   const blockQuant = targetRecords / blockSize;
 //   for (let i = 1; i <= blockQuant; i++) {
 //     const blockNum = i;
 //     pool
@@ -51,31 +53,28 @@ pool.connect()
 //   }
 // }();
 
-const lowDayColumns = ['day0', 'day1', 'day2', 'day3', 'day4', 'day5', 'day6', 'day7', 'day8', 'day9', 'locationId'];
-
-Generate lowDays
-const seedLowDays = () => {
-  // TODO: Edit these values. More blocks/smaller blocks.
-  const blockSize = 100000;
-  const blockQuant = targetRecords / blockSize;
-  for (let i = 1; i <= blockQuant; i++) {
-    const blockNum = i;
-    pool
-      .connect()
-      .then((client) => {
-        const lowDays = genLowDays(blockSize, (blockSize * (blockNum - 1)) + 1);
-        return client
-          .query(format('INSERT INTO lowDays (%L) VALUES %L', lowDayColumns, lowDays))
-          .then((res) => {
-            client.release();
-            console.log(`Finished lowDays block ${blockNum} of ${blockQuant}`);
-          });
-      })
-      .catch((err) => {
-        console.error('ERROR: failed to seed lowDays', err);
-      });
-  }
-}
+// Generate lowDays
+// const seedLowDays = (count = 5) => {
+//   for (let i = 1; i <= 5; i++) {
+//     const blockNum = i;
+//     console.log(`Starting block ${blockNum} of segment ${6 - count}`);
+//     pool
+//       .connect()
+//       .then((client) => {
+//         const lowDays = genLowDays(blockSize, (blockSize * (blockNum - 1)) + 1);
+//         return client
+//           .query(format('INSERT INTO lowDays (date, locationId) VALUES %L', lowDays))
+//           .then((res) => {
+//             client.release();
+//             console.log(`Finished lowDays block ${blockNum} of segment ${6 - count} of 10.`);
+//             if (blockNum === 5) { seedLowDays(count - 1) };
+//           });
+//       })
+//       .catch((err) => {
+//         console.error('ERROR: failed to seed lowDays', err);
+//       });
+//   }
+// }
 
 // Generate Trips
 // pool.connect()
