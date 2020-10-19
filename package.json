@@ -35,6 +35,7 @@
     "server-dev": "nodemon server/index.js",
     "resetSchema": "psql -U booking -W -f ./database/schema.sql",
     "seedDB": "npm run resetSchema && node ./database/postgres-insert.js",
+    "generateData": "node ./database/genRecords.js",
     "react-dev": "webpack -d --watch",
     "test": "jest"
   },
@@ -56,6 +57,7 @@
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "react-test-renderer": "^16.13.1",
-    "webpack-cli": "^3.3.12"
+    "webpack-cli": "^3.3.12",
+    "csv-write-stream": "2.0.0"
   }
 }
