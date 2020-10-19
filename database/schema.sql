@@ -17,15 +17,6 @@ CREATE SCHEMA booking
   )
   CREATE TABLE booking.lowDays (
     id SERIAL NOT NULL PRIMARY KEY,
-    date0 DATE NOT NULL,
-    date1 DATE,
-    date2 DATE,
-    date3 DATE,
-    date4 DATE,
-    date5 DATE,
-    date6 DATE,
-    date7 DATE,
-    date8 DATE,
-    date9 DATE,
+    date DATE NOT NULL,
     locationId INTEGER
   );
