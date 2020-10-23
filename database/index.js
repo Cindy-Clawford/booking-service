@@ -1,104 +1,110 @@
-const mongoose = require('mongoose');
-var { dbUrl, user, pass } = require('./config.js')
+var configObject = require('./config.js')
+const { Client } = require('pg');
+const client = new Client(configObject);
 
-mongoose.connect(dbUrl, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  user: user,
-  pass: pass
-});
-
-let tripSchema = mongoose.Schema({
-  locationId: {type: Number, required: true},
-  checkIn: {type: Date, required: true},
-  checkOut: {type: Date, required: true},
-  adults: Number,
-  children: Number,
-  rooms: {type: Number, required: true}
-});
-
-let locationSchema = mongoose.Schema({
-  locationId: {type: Number, required: true},
-  rooms: {type: Number, required: true},
-  name: String,
-  lowDays: [{}]
-});
+client.connect();
 
 
-
-let Trip = mongoose.model('Trip', tripSchema);
-let Location = mongoose.model('Location', locationSchema);
-
-var createTrip = (trip) => {
+var createTrip = ({ locationid, checkin, checkout, adults, children, rooms }) => {
+  const text = 'INSERT INTO trips(locationid, checkin, checkout, adults, children, rooms) VALUES($1, $2, $3, $4, $5, $6)'
+  const values = [locationid, checkin, checkout, adults, children, rooms];
   return new Promise((resolve, reject) => {
-    Trip.create(trip, (err, result) => {
-      if (err) {
+    client
+      .query(text, values)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        console.error('Error creating a new trip in database/index.js', err);
         reject(err);
-      } else {
-        resolve(result);
-      }
-    });
-  });
+      });
+  })
+};
+
+var getLowDays = (locationId) => {
+  const text = 'SELECT * FROM lowdays WHERE locationid=$1';
+  const value = [locationId];
+  return new Promise((resolve, reject) => {
+    client
+      .query(text, value)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      })
+
+  })
 }
 
 var getTripsForLocation = (locationId) => {
+  const text = 'SELECT * FROM trips WHERE locationid=$1';
+  const value = [locationId];
   return new Promise((resolve, reject) => {
-    Trip.find({
-      locationId: locationId
-    }).exec((err, results) => {
-      if (err) {
+    client
+      .query(text, value)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        console.error('Error querying trips in database/index.js', err);
         reject(err);
-      } else {
-        resolve(results);
-      }
-    });
-  });
-}
-
-var createLocation = (location) => {
-  return new Promise((resolve, reject) => {
-    Location.create({
-      locationId: location.id,
-      rooms: location.rooms,
-      name: location.name,
-      lowDays: location.lowDays
-    }, (err, results) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(results);
-      }
-    });
+      });
   });
 }
 
 var getLocation = (locationId) => {
+  const text = 'SELECT * FROM locations WHERE id=$1';
+  const value = [locationId];
   return new Promise((resolve, reject) => {
-    Location.find({
-      name: locationId
-    }).exec((err, results) => {
-      if (err) {
+    client
+      .query(text, value)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        console.error('Error getting location in database/index.js', err);
         reject(err);
-      } else {
-        resolve(results);
-      }
-    });
+      });
   });
 }
 
-const updateTrip = (tripId) => {
-  // TODO: Update trip record.
+const updateTrip = ({ id, checkin, checkout, adults, children, rooms }) => {
+  const text = 'UPDATE trips SET (checkin, checkout, adults, children, rooms) = ($1, $2, $3, $4, $5) WHERE id=$6';
+  const values = [checkin, checkout, adults, children, rooms, id];
+  return new Promise((resolve, reject) => {
+    client
+      .query(text, values)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        console.error('Error updating trip in database/index.js', err);
+        reject(err);
+      })
+  });
 };
 
 const deleteTrip = (tripID) => {
-  // TODO: Delete trip record.
+  const text = `DELETE FROM trips WHERE id=${tripID}`;
+  return new Promise((resolve, reject) => {
+    client
+      .query(text)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        console.error('Error deleteing trip in database/index.js', err);
+        reject(err);
+      });
+  });
 }
 
 module.exports = {
-  save,
-  getReservationsForLocation,
-  createLocation,
-  getLocationInformation
+  getLowDays,
+  createTrip,
+  getTripsForLocation,
+  getLocation,
   updateTrip,
   deleteTrip
 }

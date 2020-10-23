@@ -33,8 +33,7 @@
   "scripts": {
     "start": "node server/index.js",
     "server-dev": "nodemon server/index.js",
-    "resetSchema": "psql -U booking -W -f ./database/schema.sql",
-    "seedDB": "npm run resetSchema && node ./database/postgres-insert.js",
+    "seed": "psql -U booking -W -f ./database/schema.sql",
     "generateData": "node ./database/genRecords.js",
     "react-dev": "webpack -d --watch",
     "test": "jest"
