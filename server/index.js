@@ -20,6 +20,16 @@ app.get('/api/trips/:id', (req, res) => {
   });
 });
 
+app.get('/api/lowdays/:locationid', (req, res) => {
+  db.getLowDays(req.params.locationid)
+  .then((results) => {
+    res.send(results);
+  })
+  .catch((err) => {
+    console.error('Error retrieving lowdays in server/index.js', err);
+  })
+})
+
 app.get('/api/locations/:id', (req, res) => {
   db.getLocation(req.params.id)
   .then(result => {
@@ -34,8 +44,8 @@ app.post('/api/trips/', (req, res) => {
   }));
 });
 
-app.patch('/api/trips/:id', (req, res) => {
-  db.updateTrip(req.params.id, req.body.trip)
+app.patch('/api/trips/', (req, res) => {
+  db.updateTrip(req.body.trip)
   .then(result => {
     res.send(result);
   })
