@@ -1,0 +1,4 @@
+database/config.js
+package-lock.json
+/node-modules/
+*.csv
