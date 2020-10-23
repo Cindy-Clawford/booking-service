@@ -18,6 +18,7 @@ const StyledBookingApp = styled.div`
 
 
 const BookingApp = ({setCheckOutPicker, setCheckInPicker, checkOutPicker, checkInPicker}) => {
+  const [locationid, setLocationid] = useState(window.location.pathname.slice(1) || 1);
   const [trips, setTrips] = useState([]);
   const [today, setToday] = useState(new Date())
   const [month1, setMonth1] = useState();
@@ -25,10 +26,7 @@ const BookingApp = ({setCheckOutPicker, setCheckInPicker, checkOutPicker, checkI
   const [year, setYear] = useState()
   const [year2, setYear2] = useState()
 
-
   const [lowDays, setLowDays] = useState([new Date()]);
-
-
 
   const [checkInDate, setCheckInDate] = useState();
   const [checkOutDate, setCheckOutDate] = useState();
@@ -36,21 +34,18 @@ const BookingApp = ({setCheckOutPicker, setCheckInPicker, checkOutPicker, checkI
     setYear(today.getFullYear());
     setMonth1(today.getMonth());
     setYear2(today.getFullYear());
-
-    let id = window.location.pathname;
-
-    if (id === '/') {
-      id = '/hotel0';
+    if (locationid.length === 0) {
+      setLocationid(1);
     }
-
     axios({
-      url: `/api/low-days${id}`,
+      url: `/api/lowdays/${locationid}`,
       method: 'get',
     })
     .then((result) => {
+      // TODO: Remove log
       let lowPriceDays = [];
-      for (let day of result.data[0].lowDays) {
-        lowPriceDays.push(new Date(day));
+      for (let low of result.data.rows) {
+        lowPriceDays.push(new Date(low.date));
       }
       setLowDays(lowPriceDays);
     })
